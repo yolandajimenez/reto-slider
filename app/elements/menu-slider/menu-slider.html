@@ -1,0 +1,69 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import">
+<link href="../../bower_components/paper-input/paper-input.html" rel="import">
+<link href="../../bower_components/paper-slider/paper-slider.html" rel="import">
+
+<dom-module id="menu-slider">
+  <template>
+  
+    <template is="dom-repeat" items="{{rows}}" as="item" >
+      <paper-slider id="slider" pin snaps max="{{get_max()}}" max-markers="{{get_max()}}" step="1" value="{{set_val(0)}}" on-change='update_val'></paper-slider>
+    </template>  
+  
+  </template>
+  
+<script>
+   
+Polymer({
+      is: 'menu-slider',
+
+      properties: {
+      	item:{
+      		type: Array,
+      		notify: true,
+      	},
+        rows: {
+          type: Array
+        }
+
+      },
+      attached: function() {
+        this.async(function() {
+          this.rows = [
+            [{"label":"Un solo menu slider"}]
+          ];
+        });
+
+      },
+      
+      set_val: function(index) {
+        //return the value for the month by index:
+        return this.items[index].position;
+      },
+      
+      
+      update_val: function(e) {
+        //update the value for the month:
+        var index = e.target.value-1;
+        var value = e.target.value;
+        
+        console.log("index: ", index);
+        console.log("valor: " ,value);
+        
+        console.log("elemento cambiado es: ", this.items[index])
+        //set rows.index.1 = value
+        var int_value = parseInt(value);
+        this.set('items.' + index + '.1', int_value);
+        console.log(this.items);
+        
+      },
+      
+      get_max: function(index) {        
+        //TODO for each month
+        return this.items.length;
+      },
+
+
+    });
+</script>
+</dom-module>
+

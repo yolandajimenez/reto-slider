@@ -1,0 +1,160 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-auth.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<dom-module id="data-slider">
+
+
+<style>
+</style>
+
+<template>
+
+	<firebase-auth
+	  auto-login
+	  redirect
+	  location="[[firebaseURL]]"
+	  provider="[[firebaseProvider]]"
+	  on-error="onFirebaseError"
+	  on-login="onFirebaseLogin"></firebase-auth>
+	<paper-toast id="errorToast"></paper-toast>
+
+
+	<!-- Para póximos desarrollos: Posibilidad de crear los elementos del slider-->
+    <!-- form on-submit="addItem">
+      <paper-input value="{{newItemValue}}" 
+        placeholder="Introducir elemento"></paper-input>
+      <paper-button on-click="addItem">Add</paper-button>
+    </form>
+
+    <template is="dom-repeat" items="{{items}}">
+      <div>
+        <paper-icon-button icon="delete" 
+          on-click="deleteItem"></paper-icon-button>
+        <span>[[item.url]]</span>
+      </div>
+    </template-->
+ </template>
+
+
+<script>
+	'use strict';	
+
+Polymer({
+	is: 'data-slider',
+
+	properties:{
+		items : {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        dummy : {
+			type: Array,
+			notify: true,
+			value: [
+	          {
+	          	uid: 1,
+			    position: 1,
+			    text: 'Este es el texto del primer elemento',
+			    url: '/pagina1',
+			    active: true
+			  },
+			  {
+			  	uid: 2,
+			    position: 2,
+			    text: 'Este es el texto del segundo elemento',
+			    url: '/pagina1',
+			    active: false
+			  },
+			  {
+			  	uid: 3,
+			    position: 3,
+			    text: 'Este es el texto del tercer elemento',
+			    url: '/pagina1',
+			    active: false
+			  }
+		   ]
+        },
+        firebaseURL: { 
+        	type: String,
+        	value: 'https://polymerfirebasey.firebaseio.com'
+        },
+  		firebaseProvider: { 
+  			value: 'google'
+  		}
+
+	},
+	addItem: function(event) {
+	  event.preventDefault(); // Don't send the form!
+	  this.ref.push({
+	    done: false,
+	    text: this.newItemValue
+	  });
+	  this.newItemValue = '';
+	},
+
+	deleteItem: function(event) {
+	  this.ref.child(event.model.item.uid).remove();
+	},
+
+	updateItems: function(snapshot) {
+	  this.items = [];
+	  snapshot.forEach(function(childSnapshot) {
+	    var item = childSnapshot.val();
+	    item.uid = childSnapshot.key();
+	    this.push('items', item);
+	  }.bind(this));
+	},
+
+	createdummy: function(){
+		console.log("create dummy");
+		//Borramos el contenido en firebase
+		this.ref.remove();
+		//Insertamos el dummy en el firebase
+		
+		this.ref.push({
+	    	position: 1,
+		    text: 'Este es el texto del primer elemento',
+		    url: '/pagina1',
+		    img: 'https://lh3.ggpht.com/N8JZ_YW7J6B-6MrcjRsbmO121xPRif0Dde6whiT3pvsEh3INkN7h2je9I7oiqgEtGA=w300',
+		    active: true
+	  	});
+
+	  	this.ref.push({
+	    	position: 2,
+		    text: 'Este es el texto del segundo elemento',
+		    url: '/pagina2',
+		    img: 'https://lh3.ggpht.com/N8JZ_YW7J6B-6MrcjRsbmO121xPRif0Dde6whiT3pvsEh3INkN7h2je9I7oiqgEtGA=w300',
+		    active: false
+	  	});
+
+	  	this.ref.push({
+	   		position: 3,
+		    text: 'Este es el texto del tercer elemento',
+		    url: '/pagina3',
+		    img: 'https://lh3.ggpht.com/N8JZ_YW7J6B-6MrcjRsbmO121xPRif0Dde6whiT3pvsEh3INkN7h2je9I7oiqgEtGA=w300',
+		    active: false
+	  	});
+
+	},
+
+	onFirebaseError: function(event) {
+	  this.$.errorToast.text = event.detail.message;
+	  this.$.errorToast.show();
+	},
+
+	onFirebaseLogin: function(event) {
+	  this.ref = new Firebase(this.firebaseURL + '/user/' + 
+	                                                    event.detail.user.uid);
+	  this.createdummy();
+	  this.ref.on('value', function(snapshot) {
+	    this.updateItems(snapshot);
+	  }.bind(this));
+	}
+})
+
+</script>
+</dom-module>
