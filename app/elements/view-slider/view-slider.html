@@ -2,16 +2,22 @@
 <link rel="import" href="../../bower_components/firebase-element/firebase-document.html">
 <link rel="import" href="../data-slider/data-slider.html">
 <link rel="import" href="../menu-slider/menu-slider.html">
+<link rel="import" href="../item-slider/item-slider.html">
 
 
 <dom-module id="view-slider">
-
+<style>
+	:host{
+		margin: 0 auto;
+	}
+</style>
 <template is="dom-bind">
 	<data-slider items="{{items}}"></data-slider>
 	<menu-slider items="{{items}}"></menu-slider>
 </template>
 
 <script>
+
 Polymer({
 
 	is: 'view-slider',

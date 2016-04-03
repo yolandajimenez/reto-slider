@@ -3,12 +3,25 @@
 <link href="../../bower_components/paper-slider/paper-slider.html" rel="import">
 
 <dom-module id="menu-slider">
-  <template>
   
+<style>
+  :host{
+        margin: 0 auto;
+  }
+
+  paper-slider{
+        margin: 0 auto;
+  }
+
+</style>
+  <template>
+
     <template is="dom-repeat" items="{{rows}}" as="item" >
-      <paper-slider id="slider" pin snaps max="{{get_max()}}" max-markers="{{get_max()}}" step="1" value="{{set_val(0)}}" on-change='update_val'></paper-slider>
+          <paper-slider id="slider" pin snaps max="{{get_max()}}" max-markers="{{get_max()}}" step="1" value="{{set_val(0)}}" on-change='update_val'></paper-slider>
     </template>  
   
+    <item-slider element="{{item_select}}"></item-slider>
+
   </template>
   
 <script>
@@ -23,9 +36,16 @@ Polymer({
       	},
         rows: {
           type: Array
+        },
+        item_select: {
+          type: Object
         }
-
       },
+      
+      listeners: {
+            'change': 'updateitem'
+      },
+
       attached: function() {
         this.async(function() {
           this.rows = [
@@ -35,7 +55,14 @@ Polymer({
 
       },
       
+      updateitem: function(e){
+        console.log("se ha cambiado el elemento");
+        var model = e.model;
+        model.set('items.ordered', model.items);
+      },
+
       set_val: function(index) {
+        console.log("set_val")
         //return the value for the month by index:
         return this.items[index].position;
       },
@@ -49,12 +76,21 @@ Polymer({
         console.log("index: ", index);
         console.log("valor: " ,value);
         
-        console.log("elemento cambiado es: ", this.items[index])
+        
         //set rows.index.1 = value
         var int_value = parseInt(value);
-        this.set('items.' + index + '.1', int_value);
+        //this.set('items.' + index + '.1', int_value);
         console.log(this.items);
         
+        for(i=0; i < this.items.length; i++)
+          this.items[i].active = false;
+
+        //El elemento cambiado pasa a active=true 
+        this.items[index].active = true;
+
+        console.log("elemento cambiado es: ", this.items[index])
+        this.item_select = this.items[index];
+
       },
       
       get_max: function(index) {        

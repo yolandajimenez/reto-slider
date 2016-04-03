@@ -1,0 +1,72 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import">
+<link href="../../bower_components/paper-material/paper-material.html" rel="import">
+
+<dom-module id="item-slider">
+
+<style>
+	:host {
+       display: block;
+	}
+	
+	paper-material{
+		margin: 0 auto;
+		padding: 10px;
+	}
+
+	.content{
+		display: flex; 
+		flex-direction: column; 
+		width: 500px;
+		height: 370px;
+		background: #00BCD4;
+	}
+
+	.content .imagen{
+		margin: 0 auto;
+		padding-top: 20px;
+	}
+
+	.content .text{
+		margin: 0 auto;
+		color: white;
+		text-align: center;
+    	padding: 20px 30px 0px 30px;
+    	font-size: smaller;
+    	font-style: italic;
+	}
+
+	hr { 
+		border: 1px dashed white;
+		width: 100px;
+		margin-top: 20px;
+	 }
+
+
+</style>
+
+<template>
+	
+	<paper-material class="card" elevation="1">
+     	<div class="content">
+     		<div class="imagen"> <img src={{element.img}} /></div>
+     		<hr>
+     		<div class="text">{{element.text}}</div>
+     	</div>
+  	</paper-material>
+	
+</template>
+
+<script>
+
+Polymer({
+
+	is: 'item-slider',
+
+	Properties:{
+		element: { type: Object }
+	}
+
+})
+</script>
+
+</dom-module>
