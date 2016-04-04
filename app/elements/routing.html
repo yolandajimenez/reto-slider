@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     // Middleware
-    function scrollToTop(ctx, next) {
+    /*function scrollToTop(ctx, next) {
       app.scrollPageToTop();
       next();
     }
@@ -35,7 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // Routes
     page('*', scrollToTop, closeDrawer, function(ctx, next) {
       next();
-    });
+    });*/
 
     page('/', function() {
       app.route = 'home';
@@ -59,15 +59,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     // 404
-    page('*', function() {
+    /*page('*', function() {
       app.$.toast.text = 'Can\'t find: ' + window.location.href  + '. Redirected you to Home Page';
       app.$.toast.show();
       page.redirect(app.baseUrl);
-    });
+    });*/
 
     // add #! before urls
     page({
-      hashbang: true
+      hashbang: false
     });
 
   });
