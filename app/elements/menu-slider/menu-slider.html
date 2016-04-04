@@ -1,6 +1,12 @@
 <link href="../../bower_components/polymer/polymer.html" rel="import">
 <link href="../../bower_components/paper-input/paper-input.html" rel="import">
 <link href="../../bower_components/paper-slider/paper-slider.html" rel="import">
+<link rel="import" href="../routing.html">
+
+<link href="../../bower_components/neon-animation/neon-animated-pages.html" rel="import">
+<link href="../../bower_components/neon-animation/neon-animatable-behavior.html" rel="import">
+<link href="../../bower_components/neon-animation/animations/slide-from-right-animation.html" rel="import">
+<link href="../../bower_components/neon-animation/neon-animation-runner-behavior.html" rel="import">
 
 <dom-module id="menu-slider">
   
@@ -17,11 +23,11 @@
   <template>
 
     <template is="dom-repeat" items="{{rows}}" as="item" >
-          <paper-slider id="slider" pin snaps max="{{get_max()}}" max-markers="{{get_max()}}" step="1" value="{{set_val(0)}}" on-change='update_val'></paper-slider>
+          <paper-slider id="slider" auto-play="true" pin snaps toggles="true" min="0" max="{{get_max()}}" max-markers="{{get_max()}}" step="1" value="{{set_val(0)}}" on-change='update_val'></paper-slider>
     </template>  
   
-    <item-slider element="{{item_select}}"></item-slider>
-
+    <item-slider id="itemslider" element="{{item_select}}" autofocus></item-slider>
+  
   </template>
   
 <script>
@@ -39,9 +45,37 @@ Polymer({
         },
         item_select: {
           type: Object
-        }
+        },
+        selected: {
+          type: Number,
+          value:0
+        },
+        animationConfig: {
+        type: Object,
+        value: function() {
+              var itemanimation = this.$.itemslider;
+              return {
+                'entry': {
+                  name: 'slide-from-right-animation',
+                  node: itemanimation,
+                  timing: {
+                    delay: 50
+                  }
+                },
+                'exit': {
+                  name: 'fade-out-animation',
+                  node: itemanimation
+                }
+              };
+            }
+          }
       },
       
+      behaviors: [
+        Polymer.NeonAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
       listeners: {
             'change': 'updateitem'
       },
@@ -63,6 +97,7 @@ Polymer({
 
       set_val: function(index) {
         console.log("set_val")
+        this.item_select = this.items[index];
         //return the value for the month by index:
         return this.items[index].position;
       },
@@ -70,36 +105,43 @@ Polymer({
       
       update_val: function(e) {
         //update the value for the month:
-        var index = e.target.value-1;
-        var value = e.target.value;
-        
-        console.log("index: ", index);
-        console.log("valor: " ,value);
-        
-        
-        //set rows.index.1 = value
-        var int_value = parseInt(value);
-        //this.set('items.' + index + '.1', int_value);
-        console.log(this.items);
-        
-        for(i=0; i < this.items.length; i++)
-          this.items[i].active = false;
+        if(e.target.value !== 0){
+          var index = e.target.value-1;
+          var value = e.target.value;
+          
+          console.log("index: ", index);
+          console.log("valor: " ,value);
+          
+          
+          page.redirect(this.items[index].url);
+          //set rows.index.1 = value
+          var int_value = parseInt(value);
+          //this.set('items.' + index + '.1', int_value);
+          console.log(this.items);
+          
+          for(i=0; i < this.items.length; i++)
+            this.items[i].active = false;
 
-        //El elemento cambiado pasa a active=true 
-        this.items[index].active = true;
+          //El elemento cambiado pasa a active=true 
+          this.items[index].active = true;
 
-        console.log("elemento cambiado es: ", this.items[index])
-        this.item_select = this.items[index];
+          console.log("elemento cambiado es: ", this.items[index])
+          this.item_select = this.items[index];
+
+          /***** ANIMATION ****/
+          /* this.playAnimation('entry',null); */
+      
+        }  
 
       },
       
       get_max: function(index) {        
         //TODO for each month
         return this.items.length;
-      },
+      }
+  });
 
 
-    });
 </script>
 </dom-module>
-
+<simple-animation></simple-animation>

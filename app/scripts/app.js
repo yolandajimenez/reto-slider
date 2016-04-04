@@ -70,9 +70,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   });
 
   // Scroll page to top and expand header
-  app.scrollPageToTop = function() {
+  /*app.scrollPageToTop = function() {
     app.$.headerPanelMain.scrollToTop(true);
-  };
+  };*/
 
   app.closeDrawer = function() {
     app.$.paperDrawerPanel.closeDrawer();
