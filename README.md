@@ -6,6 +6,8 @@
 [![Downloads Stats][npm-downloads]][npm-url]
 
 # Awesome README [![Awesome](https://img.shields.io/badge/certificated-yes-brightgreen.svg)](https://github.com/sindresorhus/awesome)
+
+[![certificated](https://img.shields.io/badge/certificated-no-orange.svg)]
 > A curated list of awesome README
 
 # Reto-slider
