@@ -1,12 +1,7 @@
-# Product Name
-> Short blurb about what your product does.
-
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
 
 # Awesome README [![Awesome](https://img.shields.io/badge/certificated-yes-brightgreen.svg)](https://github.com/sindresorhus/awesome)
 
+[![Awesome](https://img.shields.io/badge/certificated-yes-brightgreen.svg)]
 [![certificated](https://img.shields.io/badge/certificated-no-orange.svg)]
 > A curated list of awesome README
 
