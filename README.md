@@ -2,7 +2,7 @@
 # Awesome README [![Awesome](https://img.shields.io/badge/certificated-yes-brightgreen.svg)](https://github.com/sindresorhus/awesome)
 
 [![Certificated](https://img.shields.io/badge/certificated-yes-brightgreen.svg)](http://bbva-files.s3.amazonaws.com/cells/bbva-catalog/index.html)
-(https://img.shields.io/badge/certificated-no-orange.svg)
+[![Certificated](https://img.shields.io/badge/certificated-no-orange.svg)](#)
 
 > A curated list of awesome README
 
